@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>登录</title>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid sign-box">
+            <div class="layui-row">
+                <div class="layui-col-md10 layui-col-md-offset1">
+                    <div class="layui-row">
+                        <div class="layui-col-md4 layui-col-md-offset1 sign-sign-box">
+                            <div class="sign-sign-box-top">用户登录</div>
+                            <div class="sign-sign-box-form">
+                                <form class="layui-form layui-form-pane" action="">
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="UserNumber" lay-verify="required|phone"
+                                                placeholder="请输入电话" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" name="UserPwd" lay-verify="required"
+                                                lay-reqtext="密码是必填项，不能为空？" placeholder="请输入密码" autocomplete="off"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button class="layui-btn" style="width: 78%;" lay-submit
+                                            lay-filter="login">立即登录</button>
+                                    </div>
+                                </form>
+                                <div><a href="sign.html">没有账号？点击祖册</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="layui/layui.js"></script>
+    <script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        layui.use(['element', 'carousel', 'form', 'laydate'], function () {
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var form = layui.form,
+                layer = layui.layer
+
+            form.on('submit(login)', function (data) {
+                $.ajax({
+                    url: "http://106.54.56.20:8080/user/login",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        UserNumber: data.field.UserNumber,
+                        UserPwd: data.field.UserPwd
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        var Storage = window.localStorage;
+                        Storage.setItem("token", data.token);
+                        Storage.setItem("userName", data.user.userName);
+                        Storage.setItem("userId", data.user.userId);
+                        Storage.setItem("userheadimg", data.user.userHeadImg);
+                        if (data.user.userPart == 'root') {
+                            window.location.href = "Admin.html"
+                        } else {
+                            window.location.href = "index.html";
+                        }
+                    },
+                    error: function () {
+                        console.log('false')
+                    },
+                })
+                return false;
+            })
+        });
+    </script>
+</body>
+
+</html>

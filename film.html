@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查看电影</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="layui-layout">
+        <!-- 公共的头部 -->
+        <div class="layui-header">
+            <div class="layui-logo"><img src="" alt=""></div>
+            <ul class="layui-nav layui-layout-right" style="margin-left:50px">
+                <li class="layui-nav-item"><a href="index.html">首页</a></li>
+                <li class="layui-nav-item"><a href="film.html">寻找电影</a></li>
+                <li class="layui-nav-item">
+                    <a id="LoginName" href="javascript:;">
+                        <!-- <img src="img/user.png" class="layui-nav-img" alt=""> -->
+                        <span id="before-user">用户</span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="Personal.html">个人中心</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                        <dd><a href="login.html">登录注册</a></dd>
+                        <dd><a onclick="DelectClick()">退了</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="aboutus.html">关于我们</a></li>
+            </ul>
+        </div>
+
+        <!-- 电影搜索框内容 -->
+        <div class="film__search">
+            <div class="film__search__title">
+                <span>xr电影</span>
+                <span>&gt;</span>
+                <span>电影搜索</span>
+            </div>
+            <div class="film__search__inp">
+                <div class="inp__wrapper">
+                    <input type="text" placeholder="请输入电影关键字..." class="inp" id="likestr">
+                    <button class="btn" onclick="getlikefilm()">搜索</button>
+                </div>
+                <div class="inp__bottom">
+                    <span>冰雪奇缘</span>
+                    <span>大佛</span>
+                    <span>肖申克的救赎</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 具体搜索详情 -->
+        <div class="film__detail">
+            <div class="film__detail__main">
+                <div class="main__name">
+                    语言：
+                </div>
+                <div id="main_item_language" class="main__item main__item1">
+                    <span class="active">全部</span>
+                    <span>汉语</span>
+                    <span>英语</span>
+                    <span>韩语</span>
+                    <span>法语</span>
+                    <span>阿拉伯语</span>
+                </div>
+            </div>
+            <div class="film__detail__main">
+                <div class="main__name">
+                    类型：
+                </div>
+                <div id="main_item_type" class="main__item">
+                    <span class="active">全部</span>
+                    <span>喜剧</span>
+                    <span>动作</span>
+                    <span>科幻</span>
+                    <span>爱情</span>
+                    <span>剧情</span>
+                    <span>动画</span>
+                    <span>家庭</span>
+                </div>
+            </div>
+            <div class="film__detail__main">
+                <div class="main__name">
+                    年代：
+                </div>
+                <div id="main_item_year" class="main__item">
+                    <span class="active">全部</span>
+                    <span>2020</span>
+                    <span>2019</span>
+                    <span>2018</span>
+                    <span>2017</span>
+                    <span>2016</span>
+                    <span>2015</span>
+                </div>
+            </div>
+            <div class="film__detail__main">
+                <div class="main__name">
+                    国家：
+                </div>
+                <div id="main_item_country" class="main__item">
+                    <span class="active">全部</span>
+                    <span>中国</span>
+                    <span>美国</span>
+                    <span>韩国</span>
+                    <span>日本</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 排序 -->
+        <div class="film__rank">
+            <div class="rank__item">
+                默认排序
+            </div>
+            <div class="rank__item">
+                价格
+            </div>
+            <div class="rank__item">
+                时间
+            </div>
+        </div>
+
+        <!-- 显示每一个电影 -->
+        <div class="layui-row">
+            <div class="layui-col-md8 layui-col-md-offset2">
+                <div class="layui-row layui-col-space30" style="margin-top:15px" id="film-iteam">
+                    <!-- <div class="layui-col-md3 film-item">
+                        <div>
+                            <img src="img/film/你的名字.jpg" alt=""><br>
+                            <span>你的名字</span><br>
+                            <div id="test"></div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3 "><div style="height: 100px;background-color: rgb(81, 75, 87);"></div></div>
+                    <div class="layui-col-md3 "><div style="height: 100px;background-color: rgb(31, 92, 39);"></div></div>
+                    <div class="layui-col-md3 "><div style="height: 100px;background-color: rgb(102, 182, 28);"></div></div> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 翻页 -->
+        <div class="film__pagination">
+            <div id="page"></div>
+        </div>
+        <!-- 底部信息栏 -->
+        <div class="film__bottomMes">
+            <div class="bottom__main">
+                <div class="main__item">
+                    <h1>联系我们</h1>
+                    <p>857466032</p>
+                    <p>1587648574</p>
+                    <p>8756445</p>
+                </div>
+                <div class="main__item">
+                    <h1>用户帮助</h1>
+                    <p>快速浏览</p>
+                    <p>帮助</p>
+                </div>
+                <div class="main__item">
+                    <h1>快速指南</h1>
+                    <p>首页</p>
+                    <p>电影列表</p>
+                </div>
+                <div class="main__item">
+                    <h1>条例列表</h1>
+                    <p>法律条款</p>
+                    <p>权限</p>
+                    <p>网络完全</p>
+                </div>
+            </div>
+            <div class="bottom__self">
+                <p>
+                    该网站由真小锐设计实现 ©2020 Baidu 川ICP证030173号 川公网安备11000002000001号
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="js/film.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        var dom = document.getElementById('film-iteam');
+        var str = "";
+        var likestr = "";
+        var count=0;
+        layui.use(['element', 'carousel', 'laypage', 'layer', 'rate'], function () {
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var laypage = layui.laypage,
+                layer = layui.layer;
+            var rate = layui.rate;
+            
+
+            // if (likestr == null||likestr=='') {
+            getfilmlist();
+            // } else {
+            //     getlikefilm();
+            // }
+
+            //总页数低于页码总数
+            laypage.render({
+                elem: 'page',
+                count: count, //数据总数
+                limit: 16,
+                theme: '#3dbcc6'
+            });
+
+        });
+        //遍历数据，开始渲染
+        function foreachdatas(datas) {
+            str = ``;
+            datas && datas.forEach(datas => {
+                str +=
+                    `<div class="layui-col-md3 film-item" onclick="handleClick(${datas.filmId})">
+                            <div style="text-align: center">
+                                <img src="img/film/${datas.filmImg}" alt=""><br>
+                                <span>${datas.filmName}</span><br>
+                                <div id="test"></div>
+                            </div>
+                        </div>`
+            });
+            dom.innerHTML = str;
+        }
+
+        function getfilmlist() {
+            $.ajax({
+                url: "http://106.54.56.20:8080/film/filmlist",
+                type: 'POST',
+                dataType: 'json',
+                success: function (datas) {
+                    console.log(datas);
+                    count = datas.length;
+                    foreachdatas(datas);
+                }
+            });
+        };
+
+        function getlikefilm() {
+            likestr = document.getElementById('likestr').value;
+            console.log(likestr);
+            // location.reload();
+            $.ajax({
+                url: "http://106.54.56.20:8080/film/likefilm",
+                type: 'POST',
+                data: {
+                    str: likestr
+                },
+                dataType: 'json',
+                success: function (datas) {
+                    console.log(datas);
+                    count = datas.length;
+                    foreachdatas(datas);
+                }
+            })
+
+        }
+
+        // 搜索条件
+        var FilmLanguage = '';
+        var FilmType = '';
+        var FilmShowDate = '';
+        var FilmRegion = '';
+
+        function getlanguagen() {
+            let orl = document.getElementById("main_item_language").getElementsByTagName('span');
+            let newArr = Array.from(orl); //转换为数组
+            function removeAllStyle(item) {
+                for (let i = 0; i < item.length; i++) {
+                    item[i].className = ''
+                }
+            }
+            for (let i = 0; i < newArr.length; i++) {
+                newArr[i].addEventListener('click', function () {
+                    removeAllStyle(newArr)
+                    this.className = 'active';
+                    FilmLanguage = this.innerHTML;
+                    console.log(FilmLanguage);
+                    getsearchlist();
+                })
+            }
+        }
+
+        function gettype() {
+            let orl = document.getElementById("main_item_type").getElementsByTagName('span');
+            let newArr = Array.from(orl); //转换为数组
+            function removeAllStyle(item) {
+                for (let i = 0; i < item.length; i++) {
+                    item[i].className = ''
+                }
+            }
+            for (let i = 0; i < newArr.length; i++) {
+                newArr[i].addEventListener('click', function () {
+                    removeAllStyle(newArr)
+                    this.className = 'active';
+                    FilmType = this.innerHTML;
+                    console.log(FilmType);
+                    getsearchlist();
+                })
+            }
+        }
+
+        function getshow() {
+            let orl = document.getElementById("main_item_year").getElementsByTagName('span');
+            let newArr = Array.from(orl); //转换为数组
+            function removeAllStyle(item) {
+                for (let i = 0; i < item.length; i++) {
+                    item[i].className = ''
+                }
+            }
+            for (let i = 0; i < newArr.length; i++) {
+                newArr[i].addEventListener('click', function () {
+                    removeAllStyle(newArr)
+                    this.className = 'active';
+                    FilmShowDate = this.innerHTML;
+                    console.log(FilmShowDate);
+                    getsearchlist();
+                })
+            }
+        }
+
+        function getcountry() {
+            let orl = document.getElementById("main_item_country").getElementsByTagName('span');
+            let newArr = Array.from(orl); //转换为数组
+            function removeAllStyle(item) {
+                for (let i = 0; i < item.length; i++) {
+                    item[i].className = ''
+                }
+            }
+            for (let i = 0; i < newArr.length; i++) {
+                newArr[i].addEventListener('click', function () {
+                    removeAllStyle(newArr)
+                    this.className = 'active';
+                    FilmRegion = this.innerHTML;
+                    console.log(FilmRegion);
+                    getsearchlist();
+                })
+            }
+
+        }
+        function getsearchlist() {
+            $.ajax({
+                url: "http://106.54.56.20:8080/film/searchfilm",
+                type: 'POST',
+                data: {
+                    FilmLanguage: FilmLanguage,
+                    FilmType: FilmType,
+                    FilmShowDate: FilmShowDate,
+                    FilmRegion: FilmRegion
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    count = data.length;
+                    foreachdatas(data);
+                }
+            })
+        }
+
+
+
+
+        // 点击详情
+        function handleClick(item) {
+            location.href = "filmDedail.html?id=" + item;
+        }
+
+        function changeloginname() {
+            let name = window.localStorage.getItem("userName");
+            let headimg = window.localStorage.getItem("userheadimg");
+            let headi = '';
+            console.log(headimg);
+            if (name == null) {
+                name = '用户';
+            }
+            if (headimg == null) {
+                headi = 'img/head/user.png';
+            } else {
+                headi = 'img/head/' + headimg;
+            }
+            let oLoginName = document.getElementById('LoginName');
+            var oImg = document.createElement('img');
+            oImg.src = headi;
+            oImg.classList.add("layui-nav-img");
+            oLoginName.insertBefore(oImg, document.getElementById('before-user'))
+            let nameBox = document.getElementById('before-user');
+            nameBox.innerHTML = name; //本地缓存赋值
+        }
+        changeloginname();
+        getlanguagen();
+        gettype();
+        getcountry();
+        getshow();
+    </script>
+</body>
+
+</html>

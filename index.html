@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
+</head>
+
+<body>
+    <div class="layui-layout">
+        <!-- 公共的头部 -->
+        <div class="layui-header">
+            <div class="layui-logo"><img src="" alt=""></div>
+            <ul class="layui-nav layui-layout-right" style="margin-left:50px">
+                <li class="layui-nav-item"><a href="index.html">首页</a></li>
+                <li class="layui-nav-item"><a href="film.html">寻找电影</a></li>
+                <li class="layui-nav-item">
+                    <a id="LoginName" href="javascript:;">
+                        <!-- <img src="img/user.png" class="layui-nav-img" alt=""> -->
+                        <span id="before-user">用户</span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="Personal.html">个人中心</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                        <dd><a href="login.html">登录注册</a></dd>
+                        <dd><a onclick="DelectClick()">退了</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="aboutus.html">关于我们</a></li>
+            </ul>
+        </div>
+        <!-- banner轮播图 -->
+        <div class="layui-carousel" id="banner" lay-filter="test1">
+            <div carousel-item="">
+                <div><img src="img/banner/coco.jpg" alt=""></div>
+                <div><img src="img/banner/frozen.jpg" alt=""></div>
+                <div><img src="img/banner/小偷家族.jpg" alt=""></div>
+                <div><img src="img/banner/绿皮书.jpg" alt=""></div>
+                <div><img src="img/banner/爱乐之城.jpg" alt=""></div>
+                <div><img src="img/banner/哪吒.jpg" alt=""></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主页 -->
+    <div class="layui-fluid" style="margin-top:70px">
+        <!-- 四个点 -->
+        <div class="layui-row">
+            <div class="layui-col-lg10 layui-col-lg-offset1">
+                <div class="layui-row layui-col-space30">
+                    <div class="layui-col-md3 entrance_item">
+                        <div style="overflow:hidden">
+                            <img src="img/computer.jpg" alt="">
+                        </div>
+                        <div class="entrance_item_span">购票<br><span>线上购票/快速下单</span></div>
+                    </div>
+                    <div class="layui-col-md3 entrance_item">
+                        <div style="overflow:hidden">
+                            <img src="img/film.jpg" alt="">
+                        </div>
+                        <div class="entrance_item_span">电影<br><span>线上查看/信息详细</span></div>
+                    </div>
+                    <div class="layui-col-md3 entrance_item">
+                        <div style="overflow:hidden">
+                            <img src="img/浏览.jpg" alt="">
+                        </div>
+                        <div class="entrance_item_span">浏览<br><span>web浏览/布局精美</span></div>
+                    </div>
+                    <div class="layui-col-md3 entrance_item">
+                        <div style="overflow:hidden">
+                            <img src="img/service.jpg" alt="">
+                        </div>
+                        <div class="entrance_item_span">服务<br><span>优质服务/轻松上手</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 视频块 -->
+        <div class="layui-row">
+            <div class="layui-col-md4 layui-col-md-offset4">
+                <div class="video-title">
+                    <img src="img/lift.png" alt=""><span>优质的电影体验</span><img src="img/right.png" alt="">
+                    <p>/带来不一样的视觉感受/</p>
+                </div>
+            </div>
+            <div class="layui-col-lg12">
+                <div class="video-mp4">
+                    <video src="img/video.mp4" controls="controls" autoplay="autoplay"></video>
+                </div>
+            </div>
+        </div>
+        <!-- 照片墙 -->
+        <div class="layui-row" style="padding-top: 70px;">
+            <div class="layui-col-md4 layui-col-md-offset4" style="padding-bottom: 50px;">
+                <div class="video-title">
+                    <img src="img/lift.png" alt=""><span>丰富的电影选择</span><img src="img/right.png" alt="">
+                    <p>/给你多样化的影视体验/</p>
+                </div>
+                <div class="layui-col-md4"></div>
+            </div>
+            <div class="layui-row" id="picture__wrapper">
+                <!-- <div class="layui-col-md2" style="height: 200px;">
+                        <img src="img/剧照/p2277484043.jpg" alt="" style="width: 100%;height: 100%;">
+                    </div> -->
+            </div>
+        </div>
+        <!-- 底部信息栏 -->
+        <div class="film__bottomMes">
+            <div class="bottom__main">
+                <div class="main__item">
+                    <h1>联系我们</h1>
+                    <p>857466032</p>
+                    <p>1587648574</p>
+                    <p>8756445</p>
+                </div>
+                <div class="main__item">
+                    <h1>用户帮助</h1>
+                    <p>快速浏览</p>
+                    <p>帮助</p>
+                </div>
+                <div class="main__item">
+                    <h1>快速指南</h1>
+                    <p>首页</p>
+                    <p>电影列表</p>
+                </div>
+                <div class="main__item">
+                    <h1>条例列表</h1>
+                    <p>法律条款</p>
+                    <p>权限</p>
+                    <p>网络完全</p>
+                </div>
+            </div>
+            <div class="bottom__self">
+                <p>
+                    该网站由真小锐设计实现 ©2020 Baidu 川ICP证030173号 川公网安备11000002000001号
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="layui/layui.js"></script>
+    <script src="js/film.js"></script>
+    <script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        layui.use(['element', 'carousel'], function () {
+            var element = layui.element;
+            var carousel = layui.carousel;
+
+            carousel.render({
+                elem: '#banner',
+                width: '100%', //设置容器宽度
+                height: '500px',
+                interval: '8000', //时间
+                arrow: 'always' //始终显示箭头
+            });
+        });
+        //设置name
+        function changeloginname() {
+            let name = window.localStorage.getItem("userName");
+            console.log(name);
+            let headimg = window.localStorage.getItem("userheadimg");
+            let headi='';
+            console.log(headimg);
+            if (name == null) {
+                name = '用户';
+            }
+            if (headimg == null) {
+                headi = 'img/head/user.png';
+            }else{
+                headi = 'img/head/' + headimg;
+            }
+            let oLoginName = document.getElementById('LoginName');
+            var oImg = document.createElement('img');
+            oImg.src = headi;
+            oImg.classList.add("layui-nav-img");
+            oLoginName.insertBefore(oImg, document.getElementById('before-user'))
+            let nameBox = document.getElementById('before-user');
+            nameBox.innerHTML = name; //本地缓存赋值
+        }
+
+        // 列表数据
+        const datas = [{
+            path: 'img/剧照/Alitalia.jpg'
+        }, {
+            path: 'img/剧照/coco.jpg'
+        }, {
+            path: 'img/剧照/爱在破晓黎明前.jpg'
+        }, {
+            path: 'img/剧照/霸王别姬.jpg'
+        }, {
+            path: 'img/剧照/白蛇.jpg'
+        }, {
+            path: 'img/剧照/赤壁.jpg'
+        }, {
+            path: 'img/剧照/当你沉睡的时候.jpg'
+        }, {
+            path: 'img/剧照/碟中谍.jpg'
+        }, {
+            path: 'img/剧照/毒液.jpg'
+        }, {
+            path: 'img/剧照/飞舞环游记.jpg'
+        }, {
+            path: 'img/剧照/复仇者联盟.jpg'
+        }, {
+            path: 'img/剧照/功夫熊猫.jpg'
+        }, {
+            path: 'img/剧照/哈利伯特.jpg'
+        }, {
+            path: 'img/剧照/霍比特人.jpg'
+        }, {
+            path: 'img/剧照/哪吒.jpg'
+        }, {
+            path: 'img/剧照/你的名字.jpg'
+        }, {
+            path: 'img/剧照/奇异博士.jpg'
+        }, {
+            path: 'img/剧照/少年派的奇幻漂流.jpg'
+        }, {
+            path: 'img/剧照/泰坦尼克号.jpg'
+        }, {
+            path: 'img/剧照/唐人街探案.jpg'
+        }, {
+            path: 'img/剧照/无名之辈.jpg'
+        }, {
+            path: 'img/剧照/小丑.jpg'
+        }, {
+            path: 'img/剧照/绣春刀.jpg'
+        }, {
+            path: 'img/剧照/指环王.jpg'
+        }];
+        // 照片墙列表
+        function getPicLists() {
+
+            let wrapper = document.getElementById('picture__wrapper');
+            datas && datas.forEach(item => {
+                let oDiv = document.createElement('div');
+                oDiv.classList.add('layui-col-md2'); //加类名
+                oDiv.classList.add('wallpaper');
+                oDiv.style.height = '200px'; //加样式
+                let oImg = document.createElement('img');
+                oImg.style.height = '100%';
+                oImg.style.width = '100%';
+                oImg.src = item.path;
+                oDiv.appendChild(oImg);
+                wrapper.appendChild(oDiv);
+            })
+        }
+        getPicLists();
+        changeloginname();
+    </script>
+</body>
+
+</html>

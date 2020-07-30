@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>添加影院</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-card-body">
+        <form class="layui-form" action="" lay-filter="example" id="Contract">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">影院编号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="CinemaNumber" lay-verify="required" autocomplete="off"
+                            class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">影院名称</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="CinemaName" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">位置</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="text" name="CinemaPosition" lay-verify="required"  autocomplete="off" class="layui-input" > -->
+                        <select name="CinemaPosition" lay-verify="required" lay-search="">
+                            <option value="眉山">眉山</option>
+                            <option value="彭山">彭山</option>
+                            <option value="东坡">东坡</option>
+                            <option value="青神">青神</option>
+                            <option value="仁寿">仁寿</option>
+                            <option value="洪雅">洪雅</option>
+                            <option value="丹棱">丹棱</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">详细地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="CinemaAddress" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">负责人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="CinemaMan" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属公司</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="text" name="CinemaCom" lay-verify="required" autocomplete="off" class="layui-input" > -->
+                        <select name="CinemaCom" lay-verify="required" lay-search="">
+                            <option value="万达">万达</option>
+                            <option value="太平洋">太平洋</option>
+                            <option value="横店">横店</option>
+                            <option value="星美国际">星美国际</option>
+                            <option value="上海联合">上海联合</option>
+                            <option value="金逸影视">金逸影视</option>
+                            <option value="保利万和">保利万和</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">规模</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="text" name="CinemaScale"  lay-verify="required"  autocomplete="off" class="layui-input"> -->
+                        <select name="CinemaScale" lay-verify="required" lay-search="">
+                            <option value="大">大</option>
+                            <option value="中">中</option>
+                            <option value="小">小</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="CinemaPhone" id="date2" autocomplete="off" lay-verify="required"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-inline">
+                        <select name="CinemaState" lay-verify="required" lay-search="">
+                            <option value="营业中">营业中</option>
+                            <option value="休整中">休整中</option>
+                            <option value="打酱油中">打酱油中</option>
+                        </select>
+                        <!-- <input type="text" name="CinemaState" lay-verify="required" autocomplete="off" class="layui-input" > -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="demo2" lay-filter="demo2">确认提交</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/json.js"></script>
+    <script src="../jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate,
+                $ = layui.jquery,
+                upload = layui.upload;
+
+
+            //监听提交
+            form.on('submit(demo2)', function (data) {
+                console.log(data.field);
+                $.ajax({
+                    url: "http://106.54.56.20:8080/cinema/addcinema",
+                    type: 'POST',
+                    async: false,
+                    dataType: 'text',
+                    data: {
+                        CinemaNumber: data.field.CinemaNumber,
+                        CinemaName: data.field.CinemaName,
+                        CinemaAddress: data.field.CinemaAddress,
+                        CinemaPhone: data.field.CinemaPhone,
+                        CinemaMan: data.field.CinemaMan,
+                        CinemaCom: data.field.CinemaCom,
+                        CinemaScale: data.field.CinemaScale,
+                        CinemaPosition: data.field.CinemaPosition,
+                        CinemaState: data.field.CinemaState
+                        // FilmTime: data.field.FilmTime
+                    },
+                    success: function (datas) {
+                        console.log(datas);
+                        if (datas) {
+                            layer.msg('添加成功');
+                        }
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

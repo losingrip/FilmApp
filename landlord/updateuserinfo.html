@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>信息修改</title>
+    <link rel="icon" href="../img/icon.png">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-card-body">
+        <!-- <div class="layui-upload">
+        <button type="button" class="layui-btn-primary layui-btn-sm" id="test2">上传合同图片</button>
+        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+            预览图：
+            <div class="layui-upload-list" id="demo2"></div>
+        </blockquote>
+    </div> -->
+        <form class="layui-form" action="" lay-filter="example" id="example">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">我的名字</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="UserName" lay-verify="name" autocomplete="off" class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="UserNumber" lay-verify="required|phone" autocomplete="off"
+                            class="layui-input" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">我的生日</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="UserBirthday" id="date1" lay-verify="required|date"
+                            placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">爱好</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="UserLike" lay-verify="like" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="UserPart" lay-verify="part" class="layui-input" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">住址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="UserAddress" lay-verify="address" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="UserSex" value="0" title="男" checked="">
+                    <input type="radio" name="UserSex" value="1" title="女">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注信息</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="UserStr"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认提交</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/json.js"></script>
+    <script src="../jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        let UserId = window.localStorage.getItem("userId");
+        let token = window.localStorage.getItem('token');
+        var datas;
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate,
+                upload = layui.upload;
+            laydate.render({
+                elem: '#date1'
+            });
+
+            getUserInfo();
+            //表单赋值
+            console.log(datas)
+            form.val('example', {
+                "UserName": datas.userName,
+                "UserNumber": datas.userNumber,
+                "UserBirthday": datas.userBirthday,
+                "UserLike": datas.userLike,
+                "UserPart": datas.userPart,
+                "UserSex": datas.userSex,
+                "UserStr": datas.userStr,
+                "UserAddress": datas.userAddress
+            });
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                $.ajax({
+                    url: 'http://106.54.56.20:8080/user/update',
+                    type: 'POST',
+                    async: false,
+                    dataType: 'json',
+                    data: {
+                        UserId: UserId,
+                        UserName: data.field.UserName,
+                        UserBirthday: data.field.UserBirthday,
+                        UserLike: data.field.UserLike,
+                        UserSex: data.field.UserSex,
+                        UserStr: data.field.UserStr,
+                        UserAddress: data.field.UserAddress
+                    },
+                    headers: {
+                        token: token
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        if (data) {
+                            layer.msg('修改成功');
+                        }
+                    }
+                })
+                return false;
+            });
+        });
+
+        function getUserInfo() {
+            $.ajax({
+                url: "http://106.54.56.20:8080/user/getuser",
+                type: 'POST',
+                dataType: 'json',
+                async: false,
+                data: {
+                    UserId: UserId
+                },
+                headers: {
+                    token: token
+                },
+                success: function (data) {
+                    console.log(data);
+                    datas = data;
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

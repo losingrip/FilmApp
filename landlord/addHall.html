@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>添加影厅</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-card-body">
+        <form class="layui-form" action="" lay-filter="example" id="Contract">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">影厅名字</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="HallName" lay-verify="required" autocomplete="off"
+                            class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">影厅类型</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="tel" name="HallName" lay-verify="required" autocomplete="off" class="layui-input"> -->
+                        <select name="HallType" lay-verify="required" lay-search="">
+                            <option value="2D">2D</option>
+                            <option value="3D">3D</option>
+                            <option value="2D激光">2D激光</option>
+                            <option value="3D全息">3D全息</option>
+                            <option value="3D杜比音效">3D杜比音效</option>
+                            <option value="I MAX3D">I MAX3D</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">容量</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="text" name="HallPosition" lay-verify="required"  autocomplete="off" class="layui-input" > -->
+                        <select name="HallSeat" lay-verify="required" lay-search="">
+                            <option value="24">24</option>
+                            <option value="48">48</option>
+                            <option value="64">64</option>
+                            <option value="120">120</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">座位列数</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="text" name="HallAddress"  lay-verify="required"  autocomplete="off" class="layui-input"> -->
+                        <select name="HallSeatUp" lay-verify="required" lay-search="">
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">影厅状态</label>
+                    <div class="layui-input-inline">
+                        <!-- <input type="text" name="HallMan"  lay-verify="required" autocomplete="off" class="layui-input"> -->
+                        <select name="HallState" lay-verify="required" lay-search="">
+                            <option value="修理中">修理中</option>
+                            <option value="使用中">使用中</option>
+                            <option value="打酱油中">打酱油中</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="demo2" lay-filter="demo2">确认提交</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/json.js"></script>
+    <script src="../jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate,
+                $ = layui.jquery,
+                upload = layui.upload;
+
+
+            //监听提交
+            form.on('submit(demo2)', function (data) {
+                console.log(data.field);
+                $.ajax({
+                    url: "http://106.54.56.20:8080/cinema/addhall",
+                    type: 'POST',
+                    async: false,
+                    dataType: 'text',
+                    data: {
+                        HallName: data.field.HallName,
+                        HallType: data.field.HallType,
+                        HallSeat: data.field.HallSeat,
+                        HallSeatUp: data.field.HallSeatUp,
+                        HallState: data.field.HallState
+                    },
+                    success: function (datas) {
+                        console.log(datas);
+                        if (datas) {
+                            layer.msg('添加成功');
+                        }
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

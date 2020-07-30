@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>添加场次</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-card-body">
+        <form class="layui-form" action="" lay-filter="example" id="Scene">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">电影</label>
+                    <div class="layui-input-inline">
+                        <select name="FilmId" id="Film" lay-verify="required" lay-search="">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">影院</label>
+                    <div class="layui-input-inline">
+                        <select name="CinemaId" id="Cinema" lay-verify="required" lay-search="">
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">影厅</label>
+                    <div class="layui-input-inline">
+                        <select name="HallId" id="Hall" lay-verify="required" lay-search="">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">开场时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="SceneStartTime" placeholder="以MM-dd HH:mm格式" lay-verify="required"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">散场时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="SceneEndTime" placeholder="以HH:mm格式" lay-verify="required"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="demo2" lay-filter="demo2">确认提交</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/json.js"></script>
+    <script src="../jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        var domfilm = document.getElementById('Film');
+        var Strfilm = '';
+
+        function getflimlist() {
+            $.ajax({
+                url: "http://106.54.56.20:8080/film/filmlist",
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                success: function (datas) {
+                    console.log(datas);
+                    datas && datas.forEach(datas => {
+                        Strfilm += `<option value="${datas.filmId}">${datas.filmName}</option>`
+                    });
+                    domfilm.innerHTML = Strfilm;
+                }
+            });
+        }
+        var domcinema = document.getElementById('Cinema');
+        var Strcinema = '';
+
+        function getcinema() {
+            $.ajax({
+                url: 'http://106.54.56.20:8080/cinema/cinemalist',
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                success: function (datas) {
+                    console.log(datas)
+                    datas && datas.forEach(datas => {
+                        Strcinema +=
+                            `<option value="${datas.cinemaId}">${datas.cinemaName}</option>`
+                    });
+                    domcinema.innerHTML = Strcinema;
+                }
+            })
+        }
+
+        var donhall = document.getElementById('Hall');
+        var Strhall = '';
+
+        function gethall() {
+            $.ajax({
+                url: "http://106.54.56.20:8080/cinema/halllist",
+                type: "post",
+                async: false,
+                dataType: "json",
+                success: function (datas) {
+                    console.log(datas)
+                    datas && datas.forEach(datas => {
+                        Strhall += `<option value="${datas.hallId}">${datas.hallName}</option>`
+                    });
+                    donhall.innerHTML = Strhall;
+                }
+            })
+        }
+
+        getflimlist();
+        getcinema();
+        gethall();
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate,
+                $ = layui.jquery,
+                upload = layui.upload;
+
+            //监听提交
+            form.on('submit(demo2)', function (data) {
+                console.log(data.field);
+                $.ajax({
+                    url: "http://106.54.56.20:8080/cinema/addscene",
+                    type: 'POST',
+                    async: false,
+                    dataType: 'text',
+                    data: {
+                        FilmId: data.field.FilmId,
+                        HallId: data.field.HallId,
+                        CinemaId: data.field.CinemaId,
+                        SceneStartTime: data.field.SceneStartTime,
+                        SceneEndTime: data.field.SceneEndTime
+                    },
+                    success: function (datas) {
+                        console.log(datas);
+                        alert("添加成功");
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

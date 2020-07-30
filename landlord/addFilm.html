@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>信息修改</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-card-body">
+        <form class="layui-form" action="" lay-filter="example" id="Contract">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">电影编号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmNumber" lay-verify="required" autocomplete="off"
+                            class="layui-input" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">电影名字</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="FilmName" lay-verify="required" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">电影时长</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmTime" id="date1" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">上映时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmShowDate" id="date2" autocomplete="off" lay-verify="required|date"
+                            placeholder="yyyy-MM-dd" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">电影类型</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmType" id="date1" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">主演</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmActor" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">导演</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmDirector" id="date1" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">价格</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmPrice" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">语言</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmLanguage" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">地区</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="FilmRegion" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-upload" style="margin-left: 50px;">
+                <button type="button" class="layui-btn layui-btn-sm" id="test2">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" style="height: 60px;width: 45px;" id="demo2">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">电影简介</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" lay-verify="required"
+                        name="FilmIntroduce"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="demo1" lay-filter="demo1">确认提交</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/json.js"></script>
+    <script src="../jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate,
+                $ = layui.jquery,
+                upload = layui.upload;
+
+            //日期选择
+            laydate.render({
+                elem: '#date2'
+            });
+
+            var filmname;
+
+            //图片上传
+            upload.render({
+                elem: '#test2',
+                url: 'http://106.54.56.20:8080/img/uploadfilmimg',
+                before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo2').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    filmname = res.filmname;
+                    console.log(filmname, '11111111111111111');
+                    if (res) {
+                        return layer.msg('上传成功')
+                    }
+                }
+            });
+
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                console.log(data.field);
+                $.ajax({
+                    url: "http://106.54.56.20:8080/film/addfilm",
+                    type: 'POST',
+                    async: false,
+                    dataType: 'text',
+                    data: {
+                        FilmNumber: data.field.FilmNumber,
+                        FilmName: data.field.FilmName,
+                        FilmTime: data.field.FilmTime,
+                        FilmShowDate: data.field.FilmShowDate,
+                        FilmType: data.field.FilmType,
+                        FilmActor: data.field.FilmActor,
+                        FilmDirector: data.field.FilmDirector,
+                        FilmPrice: data.field.FilmPrice,
+                        FilmLanguage: data.field.FilmLanguage,
+                        FilmRegion: data.field.FilmRegion,
+                        FilmIntroduce: data.field.FilmIntroduce,
+                        FilmImg: filmname
+                        // FilmTime: data.field.FilmTime
+                    },
+                    success: function (datas) {
+                        console.log(datas);
+                       if(datas){
+                           alert("添加成功");
+                       }
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+
+</html>

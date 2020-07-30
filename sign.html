@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>注册</title>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-fluid sign-box">
+            <div class="layui-row">
+                <div class="layui-col-md10 layui-col-md-offset1">
+                    <div class="layui-row">
+                        <div class="layui-col-md4 layui-col-md-offset1 sign-sign-box">
+                            <div class="sign-sign-box-top">用户注册</div>
+                            <div class="sign-sign-box-form">
+                                <form class="layui-form layui-form-pane" action="">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">电话</label>
+                                        <div class="layui-input-inline">
+                                            <input type="number" name="UserNumber" lay-verify="required|phone"
+                                                placeholder="请输入电话" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">密码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="password" name="UserPwd" lay-verify="required"
+                                                lay-reqtext="密码是必填项，不能为空？" placeholder="请输入密码" autocomplete="off"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">验证码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="Code" lay-verify="required"
+                                                lay-reqtext="验证码是必填项，不能为空？" placeholder="请输入验证码" autocomplete="off"
+                                                class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button type="button" id="message" class="layui-btn" data-method="offset"
+                                            style="width: 78%;">点击获取验证码</button>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button type="submit" class="layui-btn" style="width: 78%;" lay-submit
+                                            lay-filter="sign">立即提交</button>
+                                    </div>
+                                </form>
+                                <div><a href="login.html">注册成功？点击登录</a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="layui/layui.js"></script>
+    <script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        layui.use(['element', 'carousel', 'form', 'laydate'], function () {
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var form = layui.form,
+                layer = layui.layer
+
+
+            $('#message').on('click', function () {
+                var UserNumber = $('input[name="UserNumber"]').val();
+                if ((UserNumber).length != 11) {
+                    layer.open({
+                        type: 1,
+                        title: '消息',
+                        content: '<div style="padding: 20px 100px;">' + "错误的电话！" + '</div>',
+                        btn: '关闭全部',
+                        offset: 'auto',
+                        btnAlign: 'c', //按钮居中
+                        shade: 0, //不显示遮罩
+                        yes: function () {
+                            layer.closeAll();
+                        }
+                    });
+                    return false;
+                }
+                $.ajax({
+                    url: "http://106.54.56.20:8080/user/getcode",
+                    method: "GET",
+                    data: {
+                        UserNumber: UserNumber
+                    },
+                    success: function () {
+                        layer.open({
+                            type: 1,
+                            title: '消息',
+                            content: '<div style="padding: 20px 100px;">' +
+                                "验证码已经发送！" + '</div>',
+                            btn: '关闭全部',
+                            offset: 'auto',
+                            btnAlign: 'c', //按钮居中
+                            shade: 0, //不显示遮罩
+                            yes: function () {
+                                layer.closeAll();
+                            }
+                        });
+                    }
+                });
+
+            });
+            form.on('submit(sign)', function (data) {
+                $.ajax({
+                    url: "http://106.54.56.20:8080/user/insert",
+                    type: 'POST',
+                    async: false,
+                    dataType: 'text',
+                    data: {
+                        UserNumber: data.field.UserNumber,
+                        UserPwd: data.field.UserPwd,
+                        code: data.field.Code
+                    },
+                    success: function (datas) {
+                        console.log(datas);
+                        if(datas=='success'){
+                            alert("注册成功")
+                            window.location.href = "login.html";
+                        }else if(datas=='fail'){
+                            alert("账号已经存在了哦");
+                        }
+                    },
+                    error: function () {
+                        console.log('false')
+                    },
+                })
+                return false;
+            });
+        });
+    </script>
+</body>
+
+</html>

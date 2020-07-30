@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>选影院</title>
+     <link rel="stylesheet" href="layui/css/layui.css">
+     <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+      <!-- 公共的头部 -->
+      <div class="layui-header">
+          <div class="layui-logo"><img src="" alt=""></div>
+          <ul class="layui-nav layui-layout-right" style="margin-left:50px">
+              <li class="layui-nav-item"><a href="index.html">首页</a></li>
+              <li class="layui-nav-item"><a href="film.html">寻找电影</a></li>
+              <li class="layui-nav-item">
+                  <a id="LoginName" href="javascript:;">
+                      <!-- <img src="img/user.png" class="layui-nav-img" alt=""> -->
+                      <span id="before-user">用户</span>
+                  </a>
+                  <dl class="layui-nav-child">
+                      <dd><a href="Personal.html">个人中心</a></dd>
+                      <dd><a href="">安全设置</a></dd>
+                      <dd><a href="login.html">登录注册</a></dd>
+                      <dd><a onclick="DelectClick()">退了</a></dd>
+                  </dl>
+              </li>
+              <li class="layui-nav-item"><a href="aboutus.html">关于我们</a></li>
+          </ul>
+      </div>
+
+      <!-- 面包屑 -->
+      <div class="film__bread" style="margin-bottom: 20px;">
+          <span>首页</span>
+          <span>&gt;</span>
+          <span>选择影院</span>
+    </div>
+
+    <!-- 影院选择 -->
+    <div class="layui-row" id="cinema">
+         <div class="layui-col-md8 layui-col-md-offset2 cinema-item">
+              <div class="layui-row">
+                    <div class="layui-col-md1 cinema-right">
+                         <div class="layui-raw">
+                              <div class="layui-col-md2 layui-col-md-offset9 cinema-right-color"></div>
+                         </div>
+                    </div>
+                    <div class="layui-col-md9 cinema-main">
+                         <h1>太平洋电影城(眉山店)</h1><br>
+                         <span>电话:16788905673</span><br>
+                         <span>地址:东坡区二环东路273号万景国际商城4F(近激情广厂)</span>
+                    </div>
+                    <div class="layui-col-md2">
+                         <button class="layui-btn layui-btn-radius cinema-main-button">确认选择</button>
+                    </div>
+               </div>
+         </div>
+
+         <div class="layui-col-md8 layui-col-md-offset2 cinema-item">
+          <div class="layui-row">
+                <div class="layui-col-md1 cinema-right">
+                     <div class="layui-raw">
+                          <div class="layui-col-md2 layui-col-md-offset9 cinema-right-color"></div>
+                     </div>
+                </div>
+                <div class="layui-col-md9 cinema-main">
+                     <h1>太平洋电影城(眉山店)</h1><br>
+                     <span>电话:16788905673</span><br>
+                     <span>地址:东坡区二环东路273号万景国际商城4F(近激情广厂)</span>
+                </div>
+                <div class="layui-col-md2">
+                     <button class="layui-btn layui-btn-radius cinema-main-button">确认选择</button>
+                </div>
+           </div>
+     </div>
+    </div>
+
+            <!-- 底部信息栏 -->
+            <div class="film__bottomMes">
+               <div class="bottom__main">
+                   <div class="main__item">
+                       <h1>联系我们</h1>
+                       <p>857466032</p>
+                       <p>1587648574</p>
+                       <p>8756445</p>
+                   </div>
+                   <div class="main__item">
+                       <h1>用户帮助</h1>
+                       <p>快速浏览</p>
+                       <p>帮助</p>
+                   </div>
+                   <div class="main__item">
+                       <h1>快速指南</h1>
+                       <p>首页</p>
+                       <p>电影列表</p>
+                   </div>
+                   <div class="main__item">
+                       <h1>条例列表</h1>
+                       <p>法律条款</p>
+                       <p>权限</p>
+                       <p>网络完全</p>
+                   </div>
+               </div>
+               <div class="bottom__self">
+                   <p>
+                       该网站由真小锐设计实现 ©2020 Baidu 川ICP证030173号 川公网安备11000002000001号
+                   </p>
+               </div>
+           </div>
+    
+
+<script src="layui/layui.js"></script>
+<script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+<script src="js/film.js"></script>
+<script>
+     var param = getQueryString();
+     console.log(param);
+     layui.use(['element', 'carousel', 'laypage', 'layer', 'rate'], function () {
+          var element = layui.element;
+          var carousel = layui.carousel;
+          var laypage = layui.laypage,layer = layui.layer;
+          var rate = layui.rate;
+
+          let dom = document.getElementById('cinema');
+          let str = "";
+          $.ajax({
+               url:'http://106.54.56.20:8080/cinema/cinemalist',
+               type:'POST',
+               dataType:'json',
+               success:function(datas){
+                    datas && datas.forEach(datas =>{
+                         str +=` 
+                         <div class="layui-col-md8 layui-col-md-offset2 cinema-item">
+                              <div class="layui-row">
+                                   <div class="layui-col-md1 cinema-right">
+                                        <div class="layui-raw">
+                                             <div class="layui-col-md2 layui-col-md-offset9 cinema-right-color"></div>
+                                        </div>
+                                   </div>
+                                   <div class="layui-col-md9 cinema-main">
+                                        <h1>${datas.cinemaName}</h1><br>
+                                        <span>电话:${datas.cinemaPhone}</span><br>
+                                        <span>地址:${datas.cinemaPosition}</span>
+                                   </div>
+                                   <div class="layui-col-md2">
+                                        <button class="layui-btn layui-btn-radius cinema-main-button" onclick="handleClick(${datas.cinemaId})">确认选择</button>
+                                   </div>
+                              </div>
+                         </div>`
+                    })
+                dom.innerHTML = str; 
+               }
+               
+          })
+     });
+// 点击详情
+function handleClick(item) {
+     console.log(item);
+     location.href = "scene.html?cinemaId="+item+"&filmId="+param.filmId;
+}
+function changeloginname() {
+            let name = window.localStorage.getItem("userName");
+            let headimg = window.localStorage.getItem("userheadimg");
+            let headi='';
+            console.log(headimg);
+            if (name == null) {
+                name = '用户';
+            }
+            if (headimg == null) {
+                headi = 'img/head/user.png';
+            }else{
+                headi = 'img/head/' + headimg;
+            }
+            let oLoginName = document.getElementById('LoginName');
+            var oImg = document.createElement('img');
+            oImg.src = headi;
+            oImg.classList.add("layui-nav-img");
+            oLoginName.insertBefore(oImg, document.getElementById('before-user'))
+            let nameBox = document.getElementById('before-user');
+            nameBox.innerHTML = name; //本地缓存赋值
+        }
+        changeloginname();
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择场次</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- 公共的头部 -->
+    <div class="layui-header">
+        <div class="layui-logo"><img src="" alt=""></div>
+        <ul class="layui-nav layui-layout-right" style="margin-left:50px">
+            <li class="layui-nav-item"><a href="index.html">首页</a></li>
+            <li class="layui-nav-item"><a href="film.html">寻找电影</a></li>
+            <li class="layui-nav-item">
+                <a id="LoginName" href="javascript:;">
+                    <!-- <img src="img/user.png" class="layui-nav-img" alt=""> -->
+                    <span id="before-user">用户</span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="Personal.html">个人中心</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="login.html">登录注册</a></dd>
+                    <dd><a onclick="DelectClick()">退了</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="aboutus.html">关于我们</a></li>
+        </ul>
+    </div>
+
+    <!-- 面包屑 -->
+    <div class="film__bread" style="margin-bottom: 20px;">
+        <span>首页</span>
+        <span>&gt;</span>
+        <span>选择场次</span>
+    </div>
+
+    <!-- 场次选择 -->
+    <div class="layui-row" id="scene">
+        <!-- <div class="layui-col-md8 layui-col-md-offset2 scene-item">
+            <div class="layui-row">
+                <div class="layui-col-md1">
+                    <div class="layui-row">
+                        <div class="layui-col-md2 layui-col-md-offset10 scene-right-color"></div>
+                    </div>
+                </div>
+                <div class="layui-col-md2 scene-startime">
+                    <h2>3-30 09:32</h2><br>
+                    <p>散场 11:20</p>
+                </div>
+                <div class="layui-col-md1 scene-startime">
+                    <h2>I Max3D</h2><br>
+                    <p>5厅</p>
+                </div>
+                <div class="layui-col-md2 scene-startime" >
+                    <h2>价格</h2><br>
+                    <p>33元</p>
+                </div>
+                <div class="layui-col-md2">
+                    <button class="layui-btn layui-btn-radius scene-button">选择座位</button>
+                </div>
+                <div class="layui-col-md2">
+                    <button class="layui-btn layui-btn-radius scene-button">点击购买</button>
+                </div>
+            </div>         
+        </div> -->
+    </div>
+
+
+    <script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/film.js"></script>
+    <script>
+        var param = getQueryString();
+        console.log(param);
+        layui.use(['element', 'carousel', 'laypage', 'layer', 'rate'], function () {
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var laypage = layui.laypage,
+                layer = layui.layer;
+            var rate = layui.rate;
+            let dom = document.getElementById('scene');
+            let str = "";
+            $.ajax({
+                url: 'http://106.54.56.20:8080/cinema/scene',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    FilmId: param.filmId,
+                    CinemaId: param.cinemaId
+                },
+                success: function (datas) {
+                    console.log(datas);
+                    datas && datas.forEach(datas => {
+                        str += `
+                        <div class="layui-col-md8 layui-col-md-offset2 scene-item">
+                            <div class="layui-row">
+                                <div class="layui-col-md1">
+                                    <div class="layui-row">
+                                        <div class="layui-col-md2 layui-col-md-offset10 scene-right-color"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md2 scene-startime">
+                                    <h2>${datas.sceneStartTime}</h2><br>
+                                    <p>散场 ${datas.sceneEndTime}</p>
+                                </div>
+                                <div class="layui-col-md1 scene-startime">
+                                    <h2>${datas.hallType}</h2><br>
+                                    <p>${datas.hallName}</p>
+                                </div>
+                                <div class="layui-col-md2 scene-startime" >
+                                    <h2>价格</h2><br>
+                                    <p id="${datas.filmPrice}">${datas.filmPrice}元</p>
+                                </div>
+                                <div class="layui-col-md1 scene-startime" >
+                                    <h2>座位</h2><br>
+                                    <p id="${datas.sceneId}"></p>
+                                </div>
+                                <div class="layui-col-md2">
+                                    <button class="layui-btn layui-btn-radius scene-button" onclick="handleClick(${datas.hallId},${datas.sceneId})">选择座位</button>
+                                </div>
+                                <div class="layui-col-md2">
+                                    <button class="layui-btn layui-btn-radius scene-button" onclick="buyClick(${datas.hallId},${datas.sceneId},${datas.filmId},${datas.cinemaId},${datas.filmPrice})">点击购买</button>
+                                </div>
+                            </div>         
+                        </div>`
+                    })
+                    dom.innerHTML = str;
+                    setSeat();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+
+        });
+
+        function handleClick(hallid, sceneid) {
+            console.log(hallid);
+            console.log(sceneid);
+            //  sessionStorage.removeItem('HallId');
+            //  sessionStorage.clear();
+            var Storage = window.localStorage;
+            Storage.removeItem('HallId');
+            Storage.removeItem('SceneId')
+            Storage.setItem("HallId", hallid);
+            Storage.setItem("SceneId", sceneid);
+            layer.open({
+                type: 2,
+                title: '选择座位',
+                shadeClose: true,
+                shade: 0.3,
+                area: ['870px', '570px'],
+                content: 'landlord/selectseat.html', //iframe的url
+                btn: '确认',
+                yes: function (layero, index) {
+                    layer.closeAll();
+                },
+                end: function (layero, index) {
+                    window.location.reload();
+                }
+
+            });
+        }
+        var ticketSeat = 0;
+        var seatdom = window.localStorage.getItem("SceneId");
+
+        function setSeat() {
+            console.log(seatdom)
+            document.getElementById(seatdom).innerHTML = window.localStorage.getItem("seatnum");
+            ticketSeat = window.localStorage.getItem("seatnum");
+            // window.location.reload();
+            window.localStorage.removeItem('seatnum');
+        }
+
+        function buyClick(hallid, sceneid, filmid, cinemaId, filmPrice) {
+
+            if (ticketSeat == 0) {
+                alert("你没选座位!");
+            } else {
+                datas = addticket(hallid, sceneid, filmid, cinemaId, filmPrice);
+                console.log(datas);
+                if (datas.length != 0) {
+                    let url = "http://106.54.56.20:8080/pay?total_amount=" + datas.ticketMoney + "&subject=" + datas
+                        .ticketId +
+                        "&out_trade_no=" + datas.ticketId;
+                    window.open(url);
+                }
+            }
+
+
+        }
+
+
+
+
+        function addticket(hallid, sceneid, filmid, cinemaId, filmPrice) {
+            let ticket;
+            let userid = window.localStorage.getItem("userId");
+            $.ajax({
+                url: "http://106.54.56.20:8080/ticket/addticket",
+                type: 'POST',
+                dataType: 'json',
+                async: false,
+                data: {
+                    UserId: userid,
+                    HallId: hallid,
+                    SceneId: sceneid,
+                    FilmId: filmid,
+                    CinemaId: cinemaId,
+                    TicketMoney: filmPrice,
+                    TicketSeat: ticketSeat
+                },
+                success: function (datas) {
+                    ticket = datas;
+                }
+            })
+            return ticket;
+        }
+        function changeloginname() {
+            let name = window.localStorage.getItem("userName");
+            let headimg = window.localStorage.getItem("userheadimg");
+            let headi='';
+            console.log(headimg);
+            if (name == null) {
+                name = '用户';
+            }
+            if (headimg == null) {
+                headi = 'img/head/user.png';
+            }else{
+                headi = 'img/head/' + headimg;
+            }
+            let oLoginName = document.getElementById('LoginName');
+            var oImg = document.createElement('img');
+            oImg.src = headi;
+            oImg.classList.add("layui-nav-img");
+            oLoginName.insertBefore(oImg, document.getElementById('before-user'))
+            let nameBox = document.getElementById('before-user');
+            nameBox.innerHTML = name; //本地缓存赋值
+        }
+        changeloginname();
+    </script>
+</body>
+
+</html>

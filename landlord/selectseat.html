@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>选座位</title>
+    <link rel="icon" href="../img/icon.png">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+    <div id="seat" style="height: 500px;width: 860px;padding-left: 20px;padding-top: 20px;"></div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../js/json.js"></script>
+    <script src="../jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script>
+        getseat();
+        layui.use(['element', 'form', 'layedit', 'laydate', 'upload'], function () {
+            var element = layui.element;
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate,
+                upload = layui.upload;
+            let str = "";
+            let dom = document.getElementById('seat');
+
+
+            $.ajax({
+                url: "http://106.54.56.20:8080/cinema/hall",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    HallId: localStorage.getItem('HallId')
+                },
+                success: function (datas) {
+                    let j = 0;
+                    let i = 1;
+                    for (i; i <= datas[0].hallSeat; i++) {
+                        j++;
+                        if (seat.includes(i)) {
+                            str +=
+                                `<button type="button" style="width:60px;margin-top: 8px" class="layui-btn layui-btn-disabled">${i}</button>`;
+                        } else {
+                            str +=
+                                `<button type="button" onclick="handleClick(${i})" id="${i}" style="width:60px;margin-top: 8px" class="layui-btn">${i}</button>`;
+                        }
+                        if (j == datas[0].hallSeatUp) {
+                            j = 0;
+                            str += `<br>`
+                        }
+                    }
+                    dom.innerHTML = str;
+                }
+            })
+        });
+
+        var seat;
+
+        function getseat() {
+            $.ajax({
+                url: "http://106.54.56.20:8080/ticket/ticketseat",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    SceneId: localStorage.getItem('SceneId')
+                },
+                success: function (data) {
+                    console.log(data);
+                    seat = data;
+
+                }
+            })
+        }
+
+        function handleClick(item) {
+            console.log(item);
+            var Storage = window.localStorage;
+            Storage.setItem("seatnum", item);
+            let dom = document.getElementById(item);
+            dom.classList.add("layui-btn-danger");
+            // window.location.reload();
+            window.close();
+            // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            // parent.layer.close(index); //再执行关闭  
+            // $(".layui-layer-close1").trigger('click');  
+        }
+    </script>
+</body>
+
+</html>

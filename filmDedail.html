@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>电影详情</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="layui-layout">
+        <!-- 公共的头部 -->
+        <div class="layui-header">
+            <div class="layui-logo"><img src="" alt=""></div>
+            <ul class="layui-nav layui-layout-right" style="margin-left:50px">
+                <li class="layui-nav-item"><a href="index.html">首页</a></li>
+                <li class="layui-nav-item"><a href="film.html">寻找电影</a></li>
+                <li class="layui-nav-item">
+                    <a id="LoginName" href="javascript:;">
+                        <!-- <img src="img/user.png" class="layui-nav-img" alt=""> -->
+                        <span id="before-user">用户</span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="Personal.html">个人中心</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                        <dd><a href="login.html">登录注册</a></dd>
+                        <dd><a onclick="DelectClick()">退了</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="aboutus.html">关于我们</a></li>
+            </ul>
+        </div>
+
+        <!-- 面包屑 -->
+        <div class="film__bread">
+              <span>首页</span>
+              <span>&gt;</span>
+              <span>电影详情</span>
+        </div>
+
+        <!-- 显示详情内容 -->
+        <div class="film__content" id="film-info">
+              <!-- <div class="left__content">
+                    <img src="./img/film/肖申克的救赎.jpg" alt="">
+              </div>
+              <div class="right__content">
+                    <h1 class="film__title">
+                        肖申克的救赎<span class="tags">剧情</span>
+                    </h1>
+                    <div class="film__time">
+                        <label>时长：</label>
+                        <span>142分钟</span>
+                    </div>
+                    <div class="film__countey">
+                        <label>国家：</label>
+                        <span>美国</span>
+                    </div>
+                    <div class="film__countey">
+                        <label>语言：</label>
+                        <span>英语</span>
+                    </div>
+                    <div class="film__mainRole">
+                        <label>主演：</label>
+                        <span>摩根·弗里曼，蒂姆·罗宾斯</span>
+                    </div>
+                    <div class="film__director">
+                        <label>导演：</label>
+                        <span>弗兰克·达拉邦特</span>
+                    </div>
+                    <div class="film__price">
+                        <label>价格：</label>
+                        <span>60元</span>
+                    </div>
+                    <div class="film__price">
+                        <label>评分：</label>
+                        <span><div id="grade"></div></span>
+                    </div>
+                    <div class="film__desc">
+                        <label>简介：</label>
+                        <span>该片改编自斯蒂芬·金《四季奇谭》中收录的同名小说，该片中涵盖全片的主题是 “希望”，全片透过监狱这一强制剥夺自由、高度强调纪律的特殊背景来展现作为个体的人对“时间流逝、 环境改造”的恐惧。影片的结局有《基督山伯爵》式的复仇宣泄。</span>
+                    </div>
+                    <div class="film__order">
+                          预约电影票
+                    </div>
+              </div> -->
+        </div>
+        
+      
+    </div>
+
+    <script src="layui/layui.js"></script>
+    <script src="jquery-3.1.1/jquery-3.1.1.js"></script>
+    <script src="js/film.js"></script>
+    <script>
+        var filmid = getQueryString();
+        layui.use(['element', 'carousel','laypage', 'layer'], function () {
+            var element = layui.element;
+            var carousel = layui.carousel;
+            var laypage = layui.laypage,layer = layui.layer;
+            let dom = document.getElementById('film-info');
+            let str = "";
+            // let filmid = getQueryString();
+            console.log(filmid);
+             $.ajax({
+                 url:'http://106.54.56.20:8080/film/filminfo',
+                 type:'POST',
+                 dataType:'json',
+                 data:{FilmId:filmid.id},
+                 success:function(data){
+                     console.log(data);
+                     str=
+                        `<div class="left__content">
+                                <img src="img/film/${data._Items[0].filmImg}" alt="">
+                        </div>
+                        <div class="right__content">
+                                <h1 class="film__title">
+                                    ${data._Items[0].filmName}<span class="tags">${data._Items[0].filmType}</span>
+                                </h1>
+                                <div class="film__time">
+                                    <label>时长：</label>
+                                    <span>${data._Items[0].filmTime}分钟</span>
+                                </div>
+                                <div class="film__countey">
+                                    <label>国家：</label>
+                                    <span>${data._Items[0].filmRegion}</span>
+                                </div>
+                                <div class="film__countey">
+                                    <label>语言：</label>
+                                    <span>${data._Items[0].filmLunguage}</span>
+                                </div>
+                                <div class="film__mainRole">
+                                    <label>主演：</label>
+                                    <span>${data._Items[0].filmActor}</span>
+                                </div>
+                                <div class="film__director">
+                                    <label>导演：</label>
+                                    <span>${data._Items[0].filmDirector}</span>
+                                </div>
+                                <div class="film__price">
+                                    <label>价格：</label>
+                                    <span>${data._Items[0].filmPrice}元</span>
+                                </div>
+                                <div class="film__desc">
+                                    <label>简介：</label>
+                                    <span>${data._Items[0].filmIntroduce}</span>
+                                </div>
+                                <div class="film__order"onclick="handleClick(${data._Items[0].filmId})">
+                                    预约电影票
+                                </div>
+                        </div>`
+                    dom.innerHTML = str;
+                 }
+             })
+
+        });
+        // 点击详情
+        function handleClick(item) {
+            location.href = "cinema.html?filmId="+filmid.id;
+        }
+        function changeloginname() {
+            let name = window.localStorage.getItem("userName");
+            let headimg = window.localStorage.getItem("userheadimg");
+            let headi='';
+            console.log(headimg);
+            if (name == null) {
+                name = '用户';
+            }
+            if (headimg == null) {
+                headi = 'img/head/user.png';
+            }else{
+                headi = 'img/head/' + headimg;
+            }
+            let oLoginName = document.getElementById('LoginName');
+            var oImg = document.createElement('img');
+            oImg.src = headi;
+            oImg.classList.add("layui-nav-img");
+            oLoginName.insertBefore(oImg, document.getElementById('before-user'))
+            let nameBox = document.getElementById('before-user');
+            nameBox.innerHTML = name; //本地缓存赋值
+        }
+        changeloginname();
+ </script>
+</body>
+
+</html>
